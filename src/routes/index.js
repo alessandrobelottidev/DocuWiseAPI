@@ -1,0 +1,12 @@
+const { Router } = require('express')
+const accountsRoutes = require('@routes/accounts/index.js')
+const invoicesRoutes = require('@routes/invoices/index.js')
+const authRoutes = require('@routes/auth/index.js')
+
+const router = Router()
+
+router.use('/accounts', accountsRoutes)
+router.use('/invoices', invoicesRoutes)
+router.use('/auth', authRoutes)
+
+module.exports = router

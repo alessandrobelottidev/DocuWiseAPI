@@ -1,0 +1,63 @@
+<script src="https://cdn.tailwindcss.com"></script>
+
+<div class="flex justify-center">
+    <div
+        class="w-screen bg-white p-8 aspect-[210/297]"
+        id="invoice"
+    >
+        <div class="text-gray-600">
+            <i class="font-serif"
+                ><h1 class="text-xl font-bold uppercase"><%= account.nomeAzienda %></h1>
+                <p><%= account.indirizzoResidenzaFiscale %></p>
+                <p><%= account.indirizzoResidenzaCitta %></p>
+                <p class="mb-12">P.I. <%= account.pIva %></p></i
+            >
+
+                <div
+                    class="bg-cyan-600 flex flex-row text-white py-2 px-4 mb-4 font-medium"
+                >
+                    <p class="flex-1">Fattura N° <%= invoice.numeroFattura %></p>
+                    <p class="flex-1 text-right">30/10/22</p>
+                </div>
+
+                <p class="border-b-2 border-cyan-600 pb-1 mb-4">Fatturare a</p>
+                <p class="font-serif uppercase mb-2"><%= invoice.nominativo %></p>
+                <p class="font-serif uppercase"><b>Via</b></p>
+                <p class="font-serif uppercase">
+                    <%= invoice.indirizzoResidenza %>
+                    <%= invoice.capResidenza %>
+                </p>
+                <p class="font-serif uppercase mb-2"><%= invoice.cittaResidenza %></p>
+                    <p class="font-serif uppercase"><b>P.I.</b></p>
+                    <p class="font-serif uppercase mb-12"><%= invoice.pIva %></p>
+                    <p class="font-serif uppercase"><b>Cod. Fiscale</b></p>
+                    <p class="font-serif uppercase mb-12"><%= invoice.codiceFiscale %></p>
+
+                <div class="bg-cyan-600 flex flex-row text-white py-2 px-4 mb-4">
+                    <p class="flex-1 font-medium">COMPENSO PROFESSIONALE PER:</p>
+                </div>
+
+                <p class="border-b-2 font-serif border-cyan-600 pb-1 mb-6">
+                    <%= invoice.lavoroSvolto %>
+                </p>
+
+                <div class="flex flex-row text-gray-800 mb-40">
+                    <div class="flex-[4_4_0%]">
+                        <p class="font-bold text-right">TOTALE</p>
+                    </div>
+                    <div class="flex-[3_3_0%]">
+                        <p class="font-bold text-right"><%= invoice.totale %>€</p>
+                    </div>
+                    <div class="flex-1"><p>&nbsp;</p></div>
+                </div>
+
+            <p class="font-serif">
+                Operazione effettuata ex art. 1 c. 54-89 L. 190/2014 così come
+                modificato dalla Legge n. 208/2015. Regime forfettario in franchigia
+                di iva e non soggetta a ritenuta d'acconto - Imposta di bollo da 2
+                euro assolta sull'originale per importi maggiori di 77,47 euro.
+                <br /><br />
+                Marca da bollo id:
+            </p>
+        </div>
+    </div>

@@ -1,0 +1,42 @@
+{
+  "name": "temp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon ./src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.224.0",
+    "@aws-sdk/s3-request-presigner": "^3.224.0",
+    "bcrypt": "^5.1.0",
+    "cloudinary": "^1.32.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "module-alias": "^2.2.2",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "nodemon": "^2.0.20",
+    "puppeteer": "^19.3.0",
+    "sequelize": "^6.26.0",
+    "uuid": "^9.0.0"
+  },
+  "_moduleAliases": {
+    "@root": ".",
+    "@src": "./src",
+    "@routes": "./src/routes",
+    "@middlewares": "./src/middlewares",
+    "@controllers": "./src/controllers",
+    "@utils": "./src/utils",
+    "@configs": "./src/configs",
+    "@models": "./src/models",
+    "@services": "./src/services"
+  }
+}
