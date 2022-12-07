@@ -7,7 +7,8 @@ const cors = require('cors')
 const routes = require('@routes/index')
 
 const app = express()
-const port = 3000
+const interface = process.env.LISTEN_INTERFACE
+const port = process.env.LISTEN_PORT
 
 const corsOptions = { origin: 'http://localhost:5173', credentials: true }
 const sessionOptions = {
@@ -32,4 +33,4 @@ app.use((req, res, next) => {
 	})
 })
 
-app.listen(port)
+app.listen(port, interface)
