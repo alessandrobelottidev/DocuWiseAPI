@@ -6,5 +6,6 @@ const router = Router()
 
 router.route('/').post(accountController.createAccount)
 router.route('/me').get(isLoggedIn, accountController.getMe)
+router.route('/update').post(isLoggedIn, accountController.updateAccountInfo)
 
 module.exports = router

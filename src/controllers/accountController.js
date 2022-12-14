@@ -60,3 +60,45 @@ exports.createAccount = async (req, res) => {
 	// Notify the user that the account was created
 	res.status(201).json({ message: 'Account created' })
 }
+
+exports.updateAccountInfo = async (req, res) => {
+	let nomeAzienda = req.body.nomeAzienda
+	let indirizzoResidenzaFiscale = req.body.indirizzoResidenzaFiscale
+	let indirizzoResidenzaCitta = req.body.indirizzoResidenzaCitta
+	let pIva = req.body.pIva
+	let urlProfilo = req.body.urlProfilo
+
+	if (
+		!nomeAzienda ||
+		!indirizzoResidenzaFiscale ||
+		!indirizzoResidenzaCitta ||
+		!pIva ||
+		!urlProfilo
+	)
+		return res.status(400).json({
+			message: 'Missing fields',
+		})
+
+	let account = await Account.findOne({
+		where: {
+			username: req.session.username,
+		},
+	})
+
+	if (account === null)
+		return res
+			.status(404)
+			.json({ message: "The requested account doesn't exist" })
+
+	if (account.isCompleted)
+		return res.status(409).json({ message: 'Account already completed' })
+
+	account.update({
+		nomeAzienda,
+		indirizzoResidenzaFiscale,
+		indirizzoResidenzaCitta,
+		pIva,
+		urlProfilo,
+		isCompleted: true,
+	})
+}
