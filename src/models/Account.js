@@ -37,6 +37,8 @@ const Account = db.define('account', {
 	urlProfilo: {
 		type: DataTypes.STRING(512),
 		allowNull: true,
+		defaultValue:
+			'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/2048px-Circle-icons-profile.svg.png',
 	},
 	isCompleted: {
 		type: DataTypes.BOOLEAN,
