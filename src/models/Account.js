@@ -20,23 +20,23 @@ const Account = db.define('account', {
 	},
 	nomeAzienda: {
 		type: DataTypes.STRING(256),
-		allowNull: false,
+		allowNull: true,
 	},
 	indirizzoResidenzaFiscale: {
 		type: DataTypes.STRING(256),
-		allowNull: false,
+		allowNull: true,
 	},
 	indirizzoResidenzaCitta: {
 		type: DataTypes.STRING(256),
-		allowNull: false,
+		allowNull: true,
 	},
 	pIva: {
 		type: DataTypes.STRING(11),
-		allowNull: false,
+		allowNull: true,
 	},
 	urlProfilo: {
 		type: DataTypes.STRING(512),
-		allowNull: false,
+		allowNull: true,
 	},
 })
 
