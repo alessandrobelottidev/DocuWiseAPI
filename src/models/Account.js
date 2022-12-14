@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize')
 const db = require('@services/db')
 const Invoice = require('@models/Invoice')
+const Notification = require('@models/Notification')
 
 const { DataTypes } = Sequelize
 
@@ -47,5 +48,6 @@ const Account = db.define('account', {
 })
 
 Account.hasMany(Invoice)
+Account.hasMany(Notification)
 
 module.exports = Account
