@@ -50,7 +50,12 @@ exports.createAccount = async (req, res) => {
 	password = await bcrypt.hash(password, 10)
 
 	// Create the account
-	account = await Account.create({ username, password, email })
+	account = await Account.create({
+		username,
+		password,
+		email,
+		isCompleted: false,
+	})
 
 	// Notify the user that the account was created
 	res.status(201).json({ message: 'Account created' })

@@ -38,6 +38,10 @@ const Account = db.define('account', {
 		type: DataTypes.STRING(512),
 		allowNull: true,
 	},
+	isCompleted: {
+		type: DataTypes.BOOLEAN,
+		allowNull: false,
+	},
 })
 
 Account.hasMany(Invoice)
