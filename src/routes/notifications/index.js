@@ -4,6 +4,12 @@ const isLoggedIn = require('@middlewares/isLoggedIn')
 
 const router = Router()
 
-router.route('/').get(isLoggedIn, notificationsController.getNotifications)
+router
+	.route('/:quantity')
+	.get(isLoggedIn, notificationsController.getNotifications)
+
+router
+	.route('/read/:id')
+	.patch(isLoggedIn, notificationsController.readNotification)
 
 module.exports = router

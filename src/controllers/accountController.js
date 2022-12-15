@@ -1,6 +1,8 @@
 const { Op } = require('sequelize')
 const bcrypt = require('bcrypt')
 const Account = require('@models/Account')
+const Notification = require('@models/Notification')
+const getAccountId = require('@utils/getAccountId')
 
 exports.getMe = async (req, res) => {
 	let account = await Account.findOne({
@@ -57,16 +59,36 @@ exports.createAccount = async (req, res) => {
 		isCompleted: false,
 	})
 
+	// Create notification for the new account
+	let accountId = await getAccountId(res, username)
+	const title = 'Benvenuto su DocuWise!'
+	const body = 'Completa il tuo profilo'
+
+	// Create the notification
+	let notification = await Notification.create({
+		title,
+		body,
+		accountId: accountId,
+		hasAction: true,
+		actionUrl: '/update-account',
+	})
+
+	// If the notification was not created, return an internal server error
+	if (notification === null)
+		return res.status(500).json({ message: 'Internal server error' })
+
 	// Notify the user that the account was created
 	res.status(201).json({ message: 'Account created' })
 }
 
 exports.updateAccountInfo = async (req, res) => {
-	let nomeAzienda = req.body.nomeAzienda
-	let indirizzoResidenzaFiscale = req.body.indirizzoResidenzaFiscale
-	let indirizzoResidenzaCitta = req.body.indirizzoResidenzaCitta
-	let pIva = req.body.pIva
-	let urlProfilo = req.body.urlProfilo
+	let {
+		nomeAzienda,
+		indirizzoResidenzaFiscale,
+		indirizzoResidenzaCitta,
+		pIva,
+		urlProfilo,
+	} = req.body
 
 	if (
 		!nomeAzienda ||
@@ -101,4 +123,6 @@ exports.updateAccountInfo = async (req, res) => {
 		urlProfilo,
 		isCompleted: true,
 	})
+
+	res.status(201).json({ message: 'Account updated' })
 }

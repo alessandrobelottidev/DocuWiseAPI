@@ -13,6 +13,16 @@ const Notifications = db.define('notification', {
 	type: {
 		type: DataTypes.STRING(256),
 		allowNull: false,
+		defaultValue: 'default',
+	},
+	hasAction: {
+		type: DataTypes.BOOLEAN,
+		allowNull: false,
+		defaultValue: false,
+	},
+	actionUrl: {
+		type: DataTypes.STRING(512),
+		allowNull: true,
 	},
 	read: {
 		type: DataTypes.BOOLEAN,
