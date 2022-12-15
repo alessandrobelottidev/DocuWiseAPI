@@ -2,7 +2,6 @@ const Account = require('@models/Account')
 const Invoice = require('@models/Invoice')
 const getAccountId = require('@utils/getAccountId')
 const ifNull404 = require('@utils/ifNull404')
-const { generate } = require('@utils/generate')
 const { getFileUrlFromS3 } = require('@services/s3')
 
 exports.get = async (req, res) => {
