@@ -9,9 +9,9 @@ const routes = require('@routes/index')
 const app = express()
 const port = process.env.PORT || 3000
 
-const corsOptions = { origin: 'http://localhost:5173', credentials: true }
+const corsOptions = { origin: process.env.CORS_ORIGIN, credentials: true }
 const sessionOptions = {
-	secret: 'secret',
+	secret: process.env.SESSION_SECRET,
 	resave: true,
 	saveUninitialized: true,
 }
