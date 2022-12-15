@@ -96,22 +96,8 @@ exports.download = async (req, res) => {
 	// Check if invoice exits
 	ifNull404(invoice)
 
-	// Return PDF file
-	if (invoice.uuidPdf === null) {
-		// Generate PDF and send to S3 if it doesn't exist yet
-		const genResult = await generate('pdf', account, invoice)
-
-		if (!genResult)
-			return res.status(501).json({ message: 'Internal server error' })
-
-		invoice.uuidPdf = genResult
-
-		try {
-			await invoice.save()
-		} catch (err) {
-			return res.status(501).json({ message: 'Internal server error' })
-		}
-	}
+	// TODO: Generate PDF file
+	// if (invoice.uuidPdf === null)
 
 	const url = await getFileUrlFromS3(invoice.uuidPdf)
 
@@ -138,22 +124,8 @@ exports.view = async (req, res) => {
 	// Check if invoice exits
 	ifNull404(invoice)
 
-	// Return PDF file
-	if (invoice.uuidPreview === null) {
-		// Generate PDF and send to S3 if it doesn't exist yet
-		const genResult = await generate('jpeg', account, invoice)
-
-		if (!genResult)
-			return res.status(501).json({ message: 'Internal server error' })
-
-		invoice.uuidPreview = genResult
-
-		try {
-			await invoice.save()
-		} catch (err) {
-			return res.status(501).json({ message: 'Internal server error' })
-		}
-	}
+	// TODO: Generate PDF file
+	// if (invoice.uuidPdf === null)
 
 	const url = await getFileUrlFromS3(invoice.uuidPreview)
 
