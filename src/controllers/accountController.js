@@ -102,18 +102,13 @@ exports.updateAccountInfo = async (req, res) => {
 		})
 
 	let account = await Account.findOne({
-		where: {
-			username: req.session.username,
-		},
+		where: { username: req.session.username },
 	})
 
 	if (account === null)
 		return res
 			.status(404)
 			.json({ message: "The requested account doesn't exist" })
-
-	if (account.isCompleted)
-		return res.status(409).json({ message: 'Account already completed' })
 
 	account.update({
 		nomeAzienda,

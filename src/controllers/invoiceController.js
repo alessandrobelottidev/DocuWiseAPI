@@ -1,7 +1,7 @@
 const Account = require('@models/Account')
 const Invoice = require('@models/Invoice')
 const getAccountId = require('@utils/getAccountId')
-const ifNull404 = require('@utils/ifNull404')
+const { generate } = require('@utils/generate')
 const { getFileUrlFromS3 } = require('@services/s3')
 
 exports.get = async (req, res) => {
@@ -54,15 +54,13 @@ exports.create = async (req, res) => {
 	})
 		.then((invoice) => {
 			if (!invoice) {
-				console.log(invoice)
 				res.status(500).json({ message: 'Internal server error' })
 			}
 
 			res.status(200).json({ message: 'Invoice created successfully' })
 		})
 		.catch((err) => {
-			console.log(err.errors)
-			res.status(400).end()
+			res.status(400).json({ message: 'Bad request' })
 		})
 }
 
@@ -85,7 +83,10 @@ exports.download = async (req, res) => {
 	})
 
 	// Check if user exists
-	ifNull404(account)
+	if (account === null)
+		return res
+			.status(404)
+			.json({ message: "The requested resource doesn't exist" })
 
 	// Get invoice
 	let invoice = await Invoice.findOne({
@@ -93,10 +94,27 @@ exports.download = async (req, res) => {
 	})
 
 	// Check if invoice exits
-	ifNull404(invoice)
+	if (invoice === null)
+		return res
+			.status(404)
+			.json({ message: "The requested resource doesn't exist" })
 
-	// TODO: Generate PDF file
-	// if (invoice.uuidPdf === null)
+	// Generate PDF file
+	if (invoice.uuidPdf === null) {
+		// Generate PDF and send to S3 if it doesn't exist yet
+		const genResult = await generate('pdf', account, invoice)
+
+		if (!genResult)
+			return res.status(501).json({ message: 'Internal server error' })
+
+		invoice.uuidPdf = genResult
+
+		try {
+			await invoice.save()
+		} catch (err) {
+			return res.status(501).json({ message: 'Internal server error' })
+		}
+	}
 
 	const url = await getFileUrlFromS3(invoice.uuidPdf)
 
@@ -113,7 +131,10 @@ exports.view = async (req, res) => {
 	})
 
 	// Check if user exists
-	ifNull404(account)
+	if (account === null)
+		return res
+			.status(404)
+			.json({ message: "The requested resource doesn't exist" })
 
 	// Get invoice
 	let invoice = await Invoice.findOne({
@@ -121,10 +142,27 @@ exports.view = async (req, res) => {
 	})
 
 	// Check if invoice exits
-	ifNull404(invoice)
+	if (invoice === null)
+		return res
+			.status(404)
+			.json({ message: "The requested resource doesn't exist" })
 
-	// TODO: Generate PDF file
-	// if (invoice.uuidPdf === null)
+	// Generate jpeg file
+	if (invoice.uuidPreview === null) {
+		// Generate PDF and send to S3 if it doesn't exist yet
+		const genResult = await generate('jpeg', account, invoice)
+
+		if (!genResult)
+			return res.status(501).json({ message: 'Internal server error' })
+
+		invoice.uuidPreview = genResult
+
+		try {
+			await invoice.save()
+		} catch (err) {
+			return res.status(501).json({ message: 'Internal server error' })
+		}
+	}
 
 	const url = await getFileUrlFromS3(invoice.uuidPreview)
 
