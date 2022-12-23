@@ -1,8 +1,8 @@
 const Account = require('@models/Account')
 const Invoice = require('@models/Invoice')
 const getAccountId = require('@utils/getAccountId')
-const { generate } = require('@utils/generate')
 const { getFileUrlFromS3 } = require('@services/s3')
+const { default: axios } = require('axios')
 
 exports.get = async (req, res) => {
 	let accountId = await getAccountId(res, req.session.username)
@@ -99,19 +99,23 @@ exports.download = async (req, res) => {
 			.status(404)
 			.json({ message: "The requested resource doesn't exist" })
 
-	// Generate PDF file
+	// Generate PDF file if it doesn't exist yet
 	if (invoice.uuidPdf === null) {
-		// Generate PDF and send to S3 if it doesn't exist yet
-		const genResult = await generate('pdf', account, invoice)
-
-		if (!genResult)
-			return res.status(501).json({ message: 'Internal server error' })
-
-		invoice.uuidPdf = genResult
-
+		// Generate PDF and send to S3
 		try {
+			const genResult = await axios.post(
+				'http://docuwisefilegenerator.eu-west-3.elasticbeanstalk.com/generatePDF',
+				{
+					azienda: account,
+					fattura: invoice,
+				},
+			)
+
+			invoice.uuidPdf = genResult.data.uuid
+
 			await invoice.save()
 		} catch (err) {
+			console.log(err)
 			return res.status(501).json({ message: 'Internal server error' })
 		}
 	}
@@ -147,19 +151,23 @@ exports.view = async (req, res) => {
 			.status(404)
 			.json({ message: "The requested resource doesn't exist" })
 
-	// Generate jpeg file
+	// Generate jpeg file if it doesn't exist yet
 	if (invoice.uuidPreview === null) {
-		// Generate PDF and send to S3 if it doesn't exist yet
-		const genResult = await generate('jpeg', account, invoice)
-
-		if (!genResult)
-			return res.status(501).json({ message: 'Internal server error' })
-
-		invoice.uuidPreview = genResult
-
+		// Generate PDF and send to S3
 		try {
+			const genResult = await axios.post(
+				'http://docuwisefilegenerator.eu-west-3.elasticbeanstalk.com/generateJPEG',
+				{
+					azienda: account,
+					fattura: invoice,
+				},
+			)
+
+			invoice.uuidPreview = genResult.data.uuid
+
 			await invoice.save()
 		} catch (err) {
+			console.log(err)
 			return res.status(501).json({ message: 'Internal server error' })
 		}
 	}

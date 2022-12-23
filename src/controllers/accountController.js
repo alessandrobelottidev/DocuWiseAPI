@@ -31,7 +31,7 @@ exports.createAccount = async (req, res) => {
 	// Check that both username and password were provided
 	if (!username || !password || !email)
 		return res.status(400).json({
-			message: 'Username and/or password not received or wrong encoding',
+			message: 'Username, email and/or password not received or wrong encoding',
 		})
 
 	// Check that the username is not already taken
