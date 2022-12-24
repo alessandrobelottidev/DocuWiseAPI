@@ -2,7 +2,7 @@
 require('module-alias/register')
 
 const express = require('express')
-const session = require('express-session')
+const cookieSession = require('cookie-session')
 const cors = require('cors')
 const routes = require('@routes/index')
 
@@ -22,15 +22,16 @@ const corsOptions = {
 	credentials: true,
 }
 
-const sessionOptions = {
+const cookieSessionOptions = {
 	secret: process.env.SESSION_SECRET,
 	resave: true,
 	saveUninitialized: true,
+	maxAge: 24 * 60 * 60 * 1000 * 31, // 31 days
 }
 
 // Middlewares
 app.use(cors(corsOptions))
-app.use(session(sessionOptions))
+app.use(cookieSession(cookieSessionOptions))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
