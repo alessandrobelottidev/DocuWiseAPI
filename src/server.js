@@ -25,11 +25,13 @@ const corsOptions = {
 const cookieSessionOptions = {
 	name: 'session',
 	secret: process.env.SESSION_SECRET,
-	sameSite: 'None',
-	secure: false,
 	resave: true,
 	saveUninitialized: true,
-	maxAge: 24 * 60 * 60 * 1000 * 31, // 31 days
+	cookie: {
+		sameSite: 'None',
+		secure: false,
+		maxAge: 24 * 60 * 60 * 1000 * 31,
+	},
 }
 
 // Middlewares
