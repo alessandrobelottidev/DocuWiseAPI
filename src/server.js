@@ -23,6 +23,7 @@ const corsOptions = {
 }
 
 const cookieSessionOptions = {
+	name: 'session',
 	secret: process.env.SESSION_SECRET,
 	resave: true,
 	saveUninitialized: true,
