@@ -9,7 +9,19 @@ const routes = require('@routes/index')
 const app = express()
 const port = process.env.PORT || 3000
 
-const corsOptions = { origin: process.env.CORS_ORIGIN, credentials: true }
+const allowedOriginsList = process.env.CORS_ORIGIN.split(',')
+
+const corsOptions = {
+	origin: (origin, callback) => {
+		if (allowedOriginsList.indexOf(origin) !== -1) {
+			callback(null, true)
+		} else {
+			callback(new Error('Not allowed by CORS'))
+		}
+	},
+	credentials: true,
+}
+
 const sessionOptions = {
 	secret: process.env.SESSION_SECRET,
 	resave: true,
