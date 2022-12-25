@@ -41,6 +41,6 @@ exports.authorize = async (req, res) => {
 }
 
 exports.logOut = async (req, res) => {
-	req.session.destroy()
+	req.session = null
 	return res.status(200).json({ message: 'You logged out successfully' })
 }
