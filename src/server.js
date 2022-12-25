@@ -11,14 +11,10 @@ const port = process.env.PORT || 3000
 
 const allowedOriginsList = process.env.CORS_ORIGIN.split(',')
 
+console.log(allowedOriginsList)
+
 const corsOptions = {
-	origin: (origin, callback) => {
-		if (allowedOriginsList.indexOf(origin) !== -1) {
-			callback(null, true)
-		} else {
-			callback(new Error(origin + ' -> Not allowed by CORS'))
-		}
-	},
+	origin: allowedOriginsList,
 	credentials: true,
 }
 
