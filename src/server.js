@@ -9,6 +9,8 @@ const routes = require('@routes/index')
 const app = express()
 const port = process.env.PORT || 3000
 
+app.set("trust proxy", 1)
+
 const allowedOriginsList = process.env.CORS_ORIGIN.split(',')
 
 console.log(allowedOriginsList)
